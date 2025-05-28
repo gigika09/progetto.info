@@ -135,7 +135,7 @@ void mostraMenu() {
 void caricaDatiDaCSV(const string& filename, vector<RigaCSV>& dati) {
     ifstream file(filename);
     if (!file.is_open()) {
-        cerr << "Errore: impossibile aprire il file " << filename << endl;
+        cout << "Errore: impossibile aprire il file " << filename << endl;
         return;
     }
 
@@ -167,7 +167,7 @@ void caricaDatiDaCSV(const string& filename, vector<RigaCSV>& dati) {
 void salvaDatiCSV(const string& filename, const vector<RigaCSV>& dati) {
     ofstream file(filename);
     if (!file.is_open()) {
-        cerr << "Errore: impossibile aprire il file per il salvataggio" << endl;
+        cout << "Errore: impossibile aprire il file per il salvataggio" << endl;
         return;
     }
 
