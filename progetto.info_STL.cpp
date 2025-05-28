@@ -55,7 +55,7 @@ const string filename = "corsi_studenti.csv";
 
 
 int main() {
-    vector<RigaCSV> dati;
+    vector<RigaCSV> dati; //inizializza vector (stl)
     caricaDatiDaCSV(filename, dati);
 
     int scelta;
@@ -92,17 +92,17 @@ int main() {
 // Funzioni
 string toLower(const string& s) {
     string res = s;
-    transform(res.begin(), res.end(), res.begin(), ::tolower);
+    transform(res.begin(), res.end(), res.begin(), ::tolower); //trasforma un intervallo (begin-end) in tolower, sovrascrive la stringa (res begin)
     return res;
 }
 
 bool isNumber(const string& s) {
-    return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
+    return !s.empty() && all_of(s.begin(), s.end(), ::isdigit); //controlla se begin end sono valori numerici
 }
 
 void clearInputBuffer() {
     cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ingora i caratteri fino ad un numero altissimo, e ricomincia con un newline
 }
 
 int getIntInput(const string& prompt) {
@@ -141,7 +141,7 @@ void caricaDatiDaCSV(const string& filename, vector<RigaCSV>& dati) {
 
     string line;
     while (getline(file, line)) {
-        stringstream ss(line);
+        stringstream ss(line); //leggere righe dei file 
         string campo;
         RigaCSV r;
 
@@ -225,7 +225,7 @@ void studentiPerCorso(const vector<RigaCSV>& dati) {
         cout << "Inserisci codice corso (es. C001 o c001): ";
         getline(cin, codiceInput);
 
-        set<int> studentiVisti;
+        set<int> studentiVisti; //crea un set di numeri
         trovato = false;
         string codiceLower = toLower(codiceInput);
 
@@ -260,7 +260,7 @@ void stampaDatiCorso(const vector<RigaCSV>& dati) {
         cout << "Inserisci codice corso: ";
         getline(cin, codiceInput);
 
-        map<string, vector<pair<int, string>>> materiaStudenti; // Materia -> lista studenti
+        map<string, vector<pair<int, string>>> materiaStudenti; // mappa con chiave (stringa(materia) associata a un vettore di paia (int (voto)e string(materia)) 
         string codiceLower = toLower(codiceInput);
         trovato = false;
 
@@ -276,7 +276,7 @@ void stampaDatiCorso(const vector<RigaCSV>& dati) {
         }
 
         if (trovato) {
-            cout << "\nDettagli corso " << codiceInput << ":\n";
+            cout << "\nDettagli corso " << codiceInput << ":\n";  //output vari
             for (const auto& [materia, studenti] : materiaStudenti) {
                 cout << "\nMateria: " << materia << "\n";
                 cout << "Studenti (" << studenti.size() << "):\n";
@@ -291,7 +291,7 @@ void stampaDatiCorso(const vector<RigaCSV>& dati) {
 }
 
 void contaStudentiPerCorso(const vector<RigaCSV>& dati) {
-    map<string, set<int>> corsoStudenti;
+    map<string, set<int>> corsoStudenti; //chiave string, associata ad un set int (insieme di interi)
     for (const auto& r : dati) {
         corsoStudenti[r.corso.codice].insert(r.studente.matricola);
     }
@@ -328,7 +328,7 @@ void ricercaMaterieTestuale(const vector<RigaCSV>& dati) {
         string descLower = toLower(r.materia.descrizione);
 
         if (codiceLower.find(s) != string::npos || descLower.find(s) != string::npos) {
-            // Aggiungi la materia se non Ë gi‡ presente
+            // Aggiungi la materia se non √® gi√† presente
             if (risultati.find(r.materia.codice) == risultati.end()) {
                 risultati[r.materia.codice].first = r.materia.descrizione;
             }
@@ -376,7 +376,7 @@ void inserisciNuovoStudente(vector<RigaCSV>& dati) {
             if (toLower(r.materia.codice) == toLower(codice_materia)) {
                 RigaCSV nuova = r;
                 nuova.studente = {matricola, cognome, nome};
-                dati.push_back(nuova);
+                dati.push_back(nuova); //aggiunge alla fine di un vettore
                 cout << "Studente inserito nel corso " << r.corso.codice << ".\n";
                 materiaTrovata = true;
                 break;
