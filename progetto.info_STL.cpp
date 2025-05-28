@@ -47,7 +47,7 @@ void inserisciNuovoStudente(vector<RigaCSV>&);
 string toLower(const string&);
 bool isNumber(const string&);
 void clearInputBuffer();
-int getIntInput(const string& prompt);
+int IntInput(const string& prompt);
 
 // Dichiarazione file
 const string filename = "corsi_studenti.csv";
@@ -62,7 +62,7 @@ int main() {
     do {
         system("cls");
         mostraMenu();
-        scelta = getIntInput("Scelta: ");
+        scelta = IntInput("Scelta: ");
 
         system("cls");
 
@@ -90,6 +90,8 @@ int main() {
 }
 
 // Funzioni
+
+//case insensitive
 string toLower(const string& s) {
     string res = s;
     transform(res.begin(), res.end(), res.begin(), ::tolower); //trasforma un intervallo (begin-end) in tolower, sovrascrive la stringa (res begin)
@@ -102,10 +104,10 @@ bool isNumber(const string& s) {
 
 void clearInputBuffer() {
     cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); //ingora i caratteri fino ad un numero altissimo, e ricomincia con un newline
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // pulisce l'input per evitare input residui (come \n).
 }
 
-int getIntInput(const string& prompt) {
+int IntInput(const string& prompt) {
     string input;
     while (true) {
         cout << prompt;
@@ -114,7 +116,7 @@ int getIntInput(const string& prompt) {
             clearInputBuffer();
             return stoi(input);
         }
-        cout << "Input non valido. Inserisci un numero.\n";
+        cout << "Input non valido. \n";
         clearInputBuffer();
     }
 }
@@ -141,7 +143,7 @@ void caricaDatiDaCSV(const string& filename, vector<RigaCSV>& dati) {
 
     string line;
     while (getline(file, line)) {
-        stringstream ss(line); //leggere righe dei file 
+        stringstream ss(line); //leggere righe dei file -> strngstream permette di suddividere la string più facilmente 
         string campo;
         RigaCSV r;
 
@@ -171,7 +173,7 @@ void salvaDatiCSV(const string& filename, const vector<RigaCSV>& dati) {
         return;
     }
 
-    for (const auto& r : dati) {
+    for (const auto& r : dati) { //ciclo iterativo
         file << r.corso.codice << ',' << r.corso.descrizione << ','
              << r.materia.codice << ',' << r.materia.descrizione << ','
              << r.studente.matricola << ',' << r.studente.cognome << ',' << r.studente.nome << '\n';
@@ -180,7 +182,7 @@ void salvaDatiCSV(const string& filename, const vector<RigaCSV>& dati) {
 }
 
 void ricercaStudentePerMatricola(const vector<RigaCSV>& dati) {
-    int matricola = getIntInput("Inserisci matricola: ");
+    int matricola = IntInput("Inserisci matricola: ");
     bool trovato = false;
 
     for (const auto& r : dati) {
@@ -264,7 +266,7 @@ void stampaDatiCorso(const vector<RigaCSV>& dati) {
         string codiceLower = toLower(codiceInput);
         trovato = false;
 
-        // Raccogli tutti i dati
+        // raccogli tutti i dati
         for (const auto& r : dati) {
             if (toLower(r.corso.codice) == codiceLower) {
                 trovato = true;
@@ -328,7 +330,7 @@ void ricercaMaterieTestuale(const vector<RigaCSV>& dati) {
         string descLower = toLower(r.materia.descrizione);
 
         if (codiceLower.find(s) != string::npos || descLower.find(s) != string::npos) {
-            // Aggiungi la materia se non è già presente
+            // Aggiungi la materia alla mappa se non è già presente
             if (risultati.find(r.materia.codice) == risultati.end()) {
                 risultati[r.materia.codice].first = r.materia.descrizione;
             }
